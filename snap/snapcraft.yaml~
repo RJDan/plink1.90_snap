@@ -16,14 +16,16 @@ description: |
             * Run the following to rename the snap
             ```sudo snap alias rjd-plink.plink plink```
 
-website: https://github.com/RJDan/plink1.9_snap
-source-code : https://github.com/RJDan/plink1.9_snap
+website: https://github.com/RJDan/plink1.9_dev
+source-code : https://github.com/RJDan/plink1.9_dev
 icon: Icon_230417.svg
 
 grade: stable # must be 'stable' to release into candidate/stable channels
 confinement: strict # use 'strict' once you have the right plugs and slots
 license: GPL-3.0-only
 base: core22 # the base snap is the execution environment for this snap
+architectures:
+      - amd64
 
 apps:
     plink:
@@ -71,7 +73,8 @@ parts:
         plugin: make
         make-parameters:
               - LDFLAGS="-pthread  -lpthread"
-#              - LDLIBS=" -lpthread "
+              #- ZLIB=" ../zlib-1.2.12/libz.so.1.2.12 "
+              - ZLIB="$SNAP/usr/lib/${SNAPCRAFT_ARCH_TRIPLET}/zlib-1.2.12/libz.so.1.2.12"
 #              - CFLAGS="-pthread "
               - -f Makefile.std plink # Makefile.std was the make file for zlib 1.2.11, which is also the PPA version
         build-packages:
@@ -117,9 +120,9 @@ parts:
         override-build: |
                      ## Compile
                      mv ${SNAPCRAFT_PART_BUILD}/1.9/* ${SNAPCRAFT_PART_BUILD}/
-                     ls ${SNAPCRAFT_PART_BUILD}/Makefile.*
+                     #ls ${SNAPCRAFT_PART_BUILD}/Makefile.*
+                     sed -i -e "s:../zlib-1.2.11/:$SNAP/usr/lib/${SNAPCRAFT_ARCH_TRIPLET}/zlib-1.2.12/:g" ${SNAPCRAFT_PART_BUILD}/*plink*
                      snapcraftctl build
-#                     ln -sf ../libpsm1/libpsm_infinipath.so.1.16  $SNAPCRAFT_PART_INSTALL/
       #filesets:
         #       plink.out:
         #                   - toy.map
