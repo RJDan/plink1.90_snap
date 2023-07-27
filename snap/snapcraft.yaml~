@@ -8,7 +8,7 @@ description: |
           * I have packaged the software as a snap for **personal use** but I have made the snap available for free.
           * I do not maintain the software itself. I only maintain the snap packaging. Please report software bugs to the maintainers.
           * Report snap-specific bugs to me.
-            * I _DO_ use this snap. It _has passed the provided tests_ on my system. I __do not__ track the latest version.
+            * I _DO_ use this snap. It _has NOT passed ALL the provided tests_ on my system. I __do not__ track the latest version.
             * Packaging 'style' : tarball build for linux machines.
             * License refers to the original software, not the snapcraft 'code'.
             * More info:
@@ -60,22 +60,26 @@ apps:
 
 
 parts:
-    # zlib:
-    #     source: https://github.com/madler/zlib.git
-    #     source-type: git
-    #     source-tag: "04f42ce"
-    #     plugin: git
+    zlib:
+        source: http://zlib.net/fossils/zlib-1.2.11.tar.gz
+        plugin: make
+        # override-pull: |
+        #               craftctl default
+        #               cd ../
+        #               curl -O
+        #                   # Unpack and compile zlib
+        #               tar -xzvf zlib-1.2.11.tar.gz
+        #               cd zlib-1.2.11
+        #               ./configure
+        #               make
+        #               mv ../zlib-1.2.11
+        override-build: |
+                       ./configure
+                       craftctl default
     plink:
         source: https://github.com/chrchang/plink-ng.git
         source-type: git
         source-tag: "b15c19f"
-        plugin: make
-        make-parameters:
-              - LDFLAGS="-pthread  -lpthread"
-              #- ZLIB=" ../zlib-1.2.12/libz.so.1.2.12 "
-              - ZLIB="$SNAP/usr/lib/${SNAPCRAFT_ARCH_TRIPLET}/zlib-1.2.12/libz.so.1.2.12"
-#              - CFLAGS="-pthread "
-#              - -f Makefile.std plink # Makefile.std was the make file for zlib 1.2.11, which is also the PPA version
         build-packages:
 #                - curl # see if I can get away without specifying this
                 - libatlas-base-dev # Automatically Tuned Linear Algebra Software, generic static
@@ -100,28 +104,34 @@ parts:
              - liblapacke #Library of linear algebra routines 3 - C lib shared version
              - libquadmath0 # Recommended by snapcraft
              - libtmglib3 #test matrix generators of LAPACK - shared version
-             - zlib1g
+#             - zlib1g
+#             - zlib # doesnt work for jammy
 #             - cpp-12 # see if I can get away without specifying this
 #             - g++-12 # see if I can get away without specifying this
 #             - gcc-12 # see if I can get away without specifying this
 #             - libstdc++6 # see if I can get away without specifying this
-        # override-pull: |
-        #               snapcraftctl pull
-        #               echo ${PWD}
-        #               cd ${SNAPCRAFT_PART_BUILD}/
-        #               cd ../
-        #               curl -O http://zlib.net/fossils/zlib-1.2.11.tar.gz
-        #                   # Unpack and compile zlib
-        #               tar -xzvf zlib-1.2.11.tar.gz
-        #               cd zlib-1.2.11
-        #               ./configure
-        #               make
+        plugin: make
+        after:
+          - zlib
+        make-parameters:
+              - LDFLAGS="-pthread  -lpthread"
+#              - ZLIB="/usr/local/lib/libz.so.1.2.11" # this is not enough to override the Makefile defaults
+              #- ZLIB="${SNAP}/usr/lib/${SNAPCRAFT_ARCH_TRIPLET}/zlib-1.2.12/libz.so.1.2.12"
+              #- ZLIB="${SNAP}/usr/lib/${SNAPCRAFT_ARCH_TRIPLET}/zlib-1.2.11/libz.so.1.2.11"
+#              - CFLAGS="-pthread "
+              - -f Makefile.std plink # Makefile.std was the make file for zlib 1.2.11, which is also the PPA version
         override-build: |
                      ## Compile
                      mv ${SNAPCRAFT_PART_BUILD}/1.9/* ${SNAPCRAFT_PART_BUILD}/
-                     #ls ${SNAPCRAFT_PART_BUILD}/Makefile.*
-                     sed -i -e "s:../zlib-1.2.11/:$SNAP/usr/lib/${SNAPCRAFT_ARCH_TRIPLET}/zlib-1.2.12/:g" ${SNAPCRAFT_PART_BUILD}/*plink*
-                     snapcraftctl build
+
+                     sed -i -e "s:../zlib-1.2.11/zlib.h:/root/parts/zlib/install/usr/local/include/zlib.h:g" ${SNAPCRAFT_PART_BUILD}/*.{h,c,std}
+                     sed -i -e "s:../zlib-1.2.11/:/root/parts/zlib/install/usr/local/lib/:g" ${SNAPCRAFT_PART_BUILD}/*.{h,c,std}
+
+                     #sed -i -e "s:../zlib-1.2.11/:${SNAPCRAFT_PART_INSTALL}/usr/local/lib/:g" ${SNAPCRAFT_PART_BUILD}/*plink*
+                     #sed -i -e "s:../zlib-1.2.11/:${SNAPCRAFT_PART_INSTALL}/usr/local/lib/:g" ${SNAPCRAFT_PART_BUILD}/*plink*
+                     #sed -i -e "s:../zlib-1.2.11/:${SNAPCRAFT_PART_INSTALL}/usr/local/lib/:g" ${SNAPCRAFT_PART_BUILD}/Makefile.std
+
+                     craftctl default
       #filesets:
         #       plink.out:
         #                   - toy.map
