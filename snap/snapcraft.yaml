@@ -124,8 +124,11 @@ parts:
                      ## Compile
                      mv ${SNAPCRAFT_PART_BUILD}/1.9/* ${SNAPCRAFT_PART_BUILD}/
 
-                     sed -i -e "s:../zlib-1.2.11/zlib.h:/root/parts/zlib/install/usr/local/include/zlib.h:g" ${SNAPCRAFT_PART_BUILD}/*.{h,c,std}
-                     sed -i -e "s:../zlib-1.2.11/:/root/parts/zlib/install/usr/local/lib/:g" ${SNAPCRAFT_PART_BUILD}/*.{h,c,std}
+                     #sed -i -e "s:../zlib-1.2.11/zlib.h:/root/parts/zlib/install/usr/local/include/zlib.h:g" ${SNAPCRAFT_PART_BUILD}/*.{h,c,std}
+                     #sed -i -e "s:../zlib-1.2.11/:/root/parts/zlib/install/usr/local/lib/:g" ${SNAPCRAFT_PART_BUILD}/*.{h,c,std}
+
+                     sed -i -e "s:../zlib-1.2.11/zlib.h:/build/parts/zlib/install/usr/local/include/zlib.h:g" ${SNAPCRAFT_PART_BUILD}/*.{h,c,std}
+                     sed -i -e "s:../zlib-1.2.11/:/build/parts/zlib/install/usr/local/lib/:g" ${SNAPCRAFT_PART_BUILD}/*.{h,c,std}
 
                      #sed -i -e "s:../zlib-1.2.11/:${SNAPCRAFT_PART_INSTALL}/usr/local/lib/:g" ${SNAPCRAFT_PART_BUILD}/*plink*
                      #sed -i -e "s:../zlib-1.2.11/:${SNAPCRAFT_PART_INSTALL}/usr/local/lib/:g" ${SNAPCRAFT_PART_BUILD}/*plink*
