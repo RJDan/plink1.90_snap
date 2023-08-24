@@ -28,7 +28,7 @@ architectures:
 
 apps:
     plink:
-        command: plink
+        command: usr/local/bin/plink
         plugs:
           - home
 #          - network
