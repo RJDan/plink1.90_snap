@@ -28,7 +28,7 @@ architectures:
 
 apps:
     plink:
-        command: /usr/local/bin/plink
+        command: plink
         plugs:
           - home
 #          - network
@@ -136,6 +136,7 @@ parts:
         #   - $plink.out
         organize:
             "Icon_230417.svg" : snap/Icon_230417.svg
+<<<<<<< HEAD
             # "bin/plink" : usr/local/bin/plink
     # cleanup:
     #       after: [ plink ]
@@ -145,3 +146,6 @@ parts:
     #         do
     #         rm ${file}
     #         done
+=======
+            "bin/plink" : usr/local/bin/plink
+>>>>>>> 230728_Working
