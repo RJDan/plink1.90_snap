@@ -116,9 +116,6 @@ parts:
         make-parameters:
               - LDFLAGS="-pthread  -lpthread"
 #              - ZLIB="/usr/local/lib/libz.so.1.2.11" # this is not enough to override the Makefile defaults
-              #- ZLIB="${SNAP}/usr/lib/${SNAPCRAFT_ARCH_TRIPLET}/zlib-1.2.12/libz.so.1.2.12"
-              #- ZLIB="${SNAP}/usr/lib/${SNAPCRAFT_ARCH_TRIPLET}/zlib-1.2.11/libz.so.1.2.11"
-#              - CFLAGS="-pthread "
               - -f Makefile.std plink # Makefile.std was the make file for zlib 1.2.11, which is also the PPA version
         override-build: |
                      ## Compile
@@ -127,8 +124,8 @@ parts:
                      #sed -i -e "s:../zlib-1.2.11/zlib.h:/root/parts/zlib/install/usr/local/include/zlib.h:g" ${SNAPCRAFT_PART_BUILD}/*.{h,c,std}
                      #sed -i -e "s:../zlib-1.2.11/:/root/parts/zlib/install/usr/local/lib/:g" ${SNAPCRAFT_PART_BUILD}/*.{h,c,std}
 
-                     sed -i -e "s:../zlib-1.2.11/zlib.h:/build/parts/zlib/install/usr/local/include/zlib.h:g" ${SNAPCRAFT_PART_BUILD}/*.{h,c,std}
-                     sed -i -e "s:../zlib-1.2.11/:/build/parts/zlib/install/usr/local/lib/:g" ${SNAPCRAFT_PART_BUILD}/*.{h,c,std}
+                     sed -i -e "s:../zlib-1.2.11/zlib.h:../../../stage/usr/local/include/zlib.h:g" ${SNAPCRAFT_PART_BUILD}/*.{h,c,std}
+                     sed -i -e "s:../zlib-1.2.11/:../../../stage/usr/local/lib/:g" ${SNAPCRAFT_PART_BUILD}/*.{h,c,std}
 
                      #sed -i -e "s:../zlib-1.2.11/:${SNAPCRAFT_PART_INSTALL}/usr/local/lib/:g" ${SNAPCRAFT_PART_BUILD}/*plink*
                      #sed -i -e "s:../zlib-1.2.11/:${SNAPCRAFT_PART_INSTALL}/usr/local/lib/:g" ${SNAPCRAFT_PART_BUILD}/*plink*
