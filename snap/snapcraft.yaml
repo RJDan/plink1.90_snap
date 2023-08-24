@@ -136,8 +136,7 @@ parts:
         #   - $plink.out
         organize:
             "Icon_230417.svg" : snap/Icon_230417.svg
-<<<<<<< HEAD
-            # "bin/plink" : usr/local/bin/plink
+            "bin/plink" : usr/local/bin/plink
     # cleanup:
     #       after: [ plink ]
     #       plugin: nil
@@ -146,6 +145,3 @@ parts:
     #         do
     #         rm ${file}
     #         done
-=======
-            "bin/plink" : usr/local/bin/plink
->>>>>>> 230728_Working
