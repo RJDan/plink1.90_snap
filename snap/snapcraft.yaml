@@ -28,7 +28,7 @@ architectures:
 
 apps:
     plink:
-        command: /usr/local/bin/plink
+        command: plink
         plugs:
           - home
 #          - network
@@ -121,15 +121,8 @@ parts:
                      ## Compile
                      mv ${SNAPCRAFT_PART_BUILD}/1.9/* ${SNAPCRAFT_PART_BUILD}/
 
-                     #sed -i -e "s:../zlib-1.2.11/zlib.h:/root/parts/zlib/install/usr/local/include/zlib.h:g" ${SNAPCRAFT_PART_BUILD}/*.{h,c,std}
-                     #sed -i -e "s:../zlib-1.2.11/:/root/parts/zlib/install/usr/local/lib/:g" ${SNAPCRAFT_PART_BUILD}/*.{h,c,std}
-
                      sed -i -e "s:../zlib-1.2.11/zlib.h:../../../stage/usr/local/include/zlib.h:g" ${SNAPCRAFT_PART_BUILD}/*.{h,c,std}
                      sed -i -e "s:../zlib-1.2.11/:../../../stage/usr/local/lib/:g" ${SNAPCRAFT_PART_BUILD}/*.{h,c,std}
-
-                     #sed -i -e "s:../zlib-1.2.11/:${SNAPCRAFT_PART_INSTALL}/usr/local/lib/:g" ${SNAPCRAFT_PART_BUILD}/*plink*
-                     #sed -i -e "s:../zlib-1.2.11/:${SNAPCRAFT_PART_INSTALL}/usr/local/lib/:g" ${SNAPCRAFT_PART_BUILD}/*plink*
-                     #sed -i -e "s:../zlib-1.2.11/:${SNAPCRAFT_PART_INSTALL}/usr/local/lib/:g" ${SNAPCRAFT_PART_BUILD}/Makefile.std
 
                      craftctl default
       #filesets:
@@ -143,4 +136,4 @@ parts:
         #   - $plink.out
         organize:
             "Icon_230417.svg" : snap/Icon_230417.svg
-            "bin/plink" : /usr/local/bin/plink
+            "bin/plink" : usr/local/bin/plink
