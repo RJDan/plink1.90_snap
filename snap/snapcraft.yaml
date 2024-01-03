@@ -8,7 +8,7 @@ description: |
           * I have packaged the software as a snap for **personal use** but I have made the snap available for free.
           * I do not maintain the software itself. I only maintain the snap packaging. Please report software bugs to the maintainers.
           * Report snap-specific bugs to me.
-          * I _DO_ use this snap. It _has NOT passed ALL the provided tests_ on my system. I __do not__ track the latest version.
+          * I _DO_ use this snap. It _has passed ALL the provided tests_ on my system. I __do not__ track the latest version.
           * Packaging 'style' : tarball build for linux machines.
           * License refers to the original software, not the snapcraft 'code'.
           * More info:
@@ -31,8 +31,8 @@ apps:
         command: usr/local/bin/plink
         plugs:
           - home
+          - removable-media
 #          - network
-#          - removable-media
 #          - x11
 #          - wayland
 #          - desktop
@@ -57,7 +57,6 @@ apps:
       #     bind: $SNAP/usr/lib/${SNAPCRAFT_ARCH_TRIPLET}/lapack
       #   /usr/lib/${SNAPCRAFT_ARCH_TRIPLET}/blas:
       #     bind: $SNAP/usr/lib/${SNAPCRAFT_ARCH_TRIPLET}/blas
-
 
 parts:
     zlib:
@@ -123,7 +122,6 @@ parts:
 
                      sed -i -e "s:../zlib-1.2.11/zlib.h:../../../stage/usr/local/include/zlib.h:g" ${SNAPCRAFT_PART_BUILD}/*.{h,c,std}
                      sed -i -e "s:../zlib-1.2.11/:../../../stage/usr/local/lib/:g" ${SNAPCRAFT_PART_BUILD}/*.{h,c,std}
-
                      craftctl default
       #filesets:
         #       plink.out:
