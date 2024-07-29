@@ -33,12 +33,6 @@ apps:
         plugs:
           - home
           - removable-media
-#          - network
-#          - x11
-#          - wayland
-#          - desktop
-#          - desktop-legacy
-#          - unity7
         environment:
             # XDG config
             # XDG_CACHE_HOME:  $SNAP_USER_COMMON/.cache
